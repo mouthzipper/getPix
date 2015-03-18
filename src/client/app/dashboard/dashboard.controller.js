@@ -2,19 +2,37 @@
 	'use strict';
 
 	/* @ngInject */
-	function DashboardController( $q, logger, FlickrService ) {
+	function DashboardController( $q, logger, FlickrService, $window ) {
 		var self = this;
+		
+		var store = $window.localStorage; 
+		var storedSearch = store.getItem( 'search' );
+		var storedPage   = store.getItem( 'page' );
 
+		self.searchText;
+		self.pageNumber;
 		self.photos = [];
-	    self.currentPhoto = null;
 	    self.pageNav = [];
 	    self.text = '';
 		self.title = 'Dashboard';
 		self.searchFlickr = searchFlickr;
 		self.paginator = paginator;
-		searchFlickr();
+		
+
+		if ( storedSearch !== "undefined" && storedSearch && storedPage !== "undefined" && storedPage ) {
+			self.searchText = storedSearch;
+			self.pageNumber = storedPage;
+		}
+		searchFlickr( self.searchText, self.pageNumber );
 
 		function searchFlickr( searchText, pageNumber ) {
+			self.searchText = searchText || 'recents';
+			pageNumber = pageNumber || 1;
+			// store to localstorage all the searches
+			store.setItem( 'search', searchText );
+			store.setItem( 'page', pageNumber );
+			self.loading = true;
+			
 			FlickrService.searchFlickr( searchText, pageNumber )
 				.then( function ( data ) {
 					self.photos = data.photos.photo;
@@ -22,10 +40,13 @@
 		            self.pages  = data.photos.pages;
 		            self.total  = data.photos.total;
 		            paginator();
+		            self.loading = false;
 				})
 				.catch( errorHandler );
 		}
-
+		 function updateSearchText( searchText ) {
+		 	self.searchText = FlickrService.setSearchText( searchText );
+		 }
 		// paginator 
 		function paginator (){
 	       	var pageNav = [];

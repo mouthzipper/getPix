@@ -9,6 +9,12 @@
 		self.API_KEY  = API_CONFIG.KEY;
 		self.API_URL = API_CONFIG.URL;
 
+		function setSearchText( value  ) {
+			value = value || '';
+			self.searchText = value;
+			return self.searchText;
+		}
+
 		function searchFlickr( search, page ){
 
 			search = search || '';
@@ -68,7 +74,8 @@
 
 		var service = {
 			searchFlickr   : searchFlickr,
-			getPhotoDetail : getPhotoDetail
+			getPhotoDetail : getPhotoDetail,
+			setSearchText     : setSearchText
 		};
 
 		return service;
