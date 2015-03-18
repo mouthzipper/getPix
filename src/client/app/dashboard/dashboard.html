@@ -1,5 +1,10 @@
 <section id="dashboard-view">
-	<div class="container">
+	<div class="container" ng-if="!dashboard.loading">
+		<div ng-if="dashboard.loading">
+			<div class="jumbotron">
+				<h1>Please wait.........</h1>
+			</div>
+		</div>
 		<div class="row">
 				<h2 class="text-center">Search thousands of images at your own taste.</h2>
 		</div>
@@ -12,7 +17,7 @@
 					</span>
 				</div>
 			</form>
-			<p class="text-muted results-summary">{{dashboard.pages}} results for {{dashboard.searchText}}</p>	
+			<p class="text-muted results-summary" ng-if="dashboard.seeResults">{{dashboard.pages}} results for {{dashboard.searchTextResult}}</p>	
 		</div>
 		<div class="clearfix"></div>
 		<hr>
@@ -23,7 +28,6 @@
 	        </ul> 
       	</div>
 		<div class=" gallery">
-			<div ng-if="dashboard.loading" class="loading"><img src="../images/loading.gif"></div>
 			<div class="col-lg-3 col-md-3 col-xs-6 col-center image-holder" ng-repeat="photo in dashboard.photos">
 				<a class="thumbnail" ui-sref="detail({photoId: '{{photo.id}}'})">
 					<img class="thumb img-thumbnail img-responsive" ng-src="http://farm{{photo.farm}}.static.flickr.com/{{photo.server}}/{{photo.id}}_{{photo.secret}}_n.jpg">

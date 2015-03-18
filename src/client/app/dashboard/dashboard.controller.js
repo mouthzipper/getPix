@@ -17,12 +17,14 @@
 		self.title = 'Dashboard';
 		self.searchFlickr = searchFlickr;
 		self.paginator = paginator;
+		self.loading = true;
+		self.seeResults = false; // hide results count if no data
 		
-
 		if ( storedSearch !== "undefined" && storedSearch && storedPage !== "undefined" && storedPage ) {
 			self.searchText = storedSearch;
 			self.pageNumber = storedPage;
 		}
+
 		searchFlickr( self.searchText, self.pageNumber );
 
 		function searchFlickr( searchText, pageNumber ) {
@@ -31,16 +33,17 @@
 			// store to localstorage all the searches
 			store.setItem( 'search', searchText );
 			store.setItem( 'page', pageNumber );
-			self.loading = true;
-			
+			self.searchTextResult = searchText;
+
 			FlickrService.searchFlickr( searchText, pageNumber )
 				.then( function ( data ) {
+					self.loading = false;
+					self.seeResults = true;
 					self.photos = data.photos.photo;
 		            self.page   = data.photos.page;
 		            self.pages  = data.photos.pages;
 		            self.total  = data.photos.total;
 		            paginator();
-		            self.loading = false;
 				})
 				.catch( errorHandler );
 		}

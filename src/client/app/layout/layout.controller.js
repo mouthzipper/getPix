@@ -2,9 +2,8 @@
 	'use strict';
 
 	/* @ngInject */
-	function LayoutController( $rootScope, $timeout, config, logger ) {
-		var self = this;
-
+	function LayoutController( $rootScope, config, logger ) {
+		var self     = this;
 		activate();
 
 		function activate() {
