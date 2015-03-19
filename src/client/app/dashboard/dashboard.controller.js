@@ -4,8 +4,8 @@
 	/* @ngInject */
 	function DashboardController( $q, logger, FlickrService, $window ) {
 		var self = this;
-		
-		var store = $window.localStorage; 
+
+		var store = $window.localStorage;
 		var storedSearch = store.getItem( 'search' );
 		var storedPage   = store.getItem( 'page' );
 
@@ -19,7 +19,7 @@
 		self.paginator = paginator;
 		self.loading = true;
 		self.seeResults = false; // hide results count if no data
-		
+
 		if ( storedSearch !== "undefined" && storedSearch && storedPage !== "undefined" && storedPage ) {
 			self.searchText = storedSearch;
 			self.pageNumber = storedPage;
@@ -33,7 +33,7 @@
 			// store to localstorage all the searches
 			store.setItem( 'search', searchText );
 			store.setItem( 'page', pageNumber );
-			self.searchTextResult = searchText;
+			self.searchTextResult = self.searchText;
 
 			FlickrService.searchFlickr( searchText, pageNumber )
 				.then( function ( data ) {
@@ -50,7 +50,7 @@
 		 function updateSearchText( searchText ) {
 		 	self.searchText = FlickrService.setSearchText( searchText );
 		 }
-		// paginator 
+		// paginator
 		function paginator (){
 	       	var pageNav = [];
 	        if( self.page > 1 ){

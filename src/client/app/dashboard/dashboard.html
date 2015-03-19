@@ -17,16 +17,19 @@
 					</span>
 				</div>
 			</form>
-			<p class="text-muted results-summary" ng-if="dashboard.seeResults">{{dashboard.pages}} results for {{dashboard.searchTextResult}}</p>	
+			<p class="text-muted results-summary" ng-if="dashboard.seeResults">{{dashboard.pages}} results for {{dashboard.searchTextResult}}</p>
 		</div>
 		<div class="clearfix"></div>
 		<hr>
-		<div class="col-md-12">
+		<div class="col-md-12" ng-if="dashboard.pages !== 0">
 	        <ul class="breadcrumb">
 	        	<li ng-repeat="pageNav in dashboard.pageNav"><a href="" ng-click="dashboard.searchFlickr( dashboard.searchText, pageNav.number )">{{ pageNav.text }}</a></li>
-	        	<span class="pages pull-right">Page {{dashboard.page}} of {{dashboard.pages}}</span>	
-	        </ul> 
+	        	<span class="pages pull-right">Page {{dashboard.page}} of {{dashboard.pages}}</span>
+	        </ul>
       	</div>
+      	<div class="row" ng-if="dashboard.pages === 0">
+				<h2 class="text-center">No results found in {{ dashboard.searchText }}</h2>
+		</div>
 		<div class=" gallery">
 			<div class="col-lg-3 col-md-3 col-xs-6 col-center image-holder" ng-repeat="photo in dashboard.photos">
 				<a class="thumbnail" ui-sref="detail({photoId: '{{photo.id}}'})">
@@ -34,5 +37,5 @@
 				</a>
 			</div>
 		</div>
-	</div> 
+	</div>
 </section>
